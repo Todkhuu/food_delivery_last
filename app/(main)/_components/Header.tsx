@@ -2,10 +2,10 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUser } from "../_context/UserContext";
-import { HeaderLeft } from "@/components/header/HeaderLeft";
-import { HeaderLogOut } from "@/components/header/HeaderLogOut";
-import { HeaderSheet } from "@/components/header/HeaderSheet";
-import { HeaderAddress } from "@/components/header/HeaderAddress";
+import { HeaderLeft } from "@/components/home/HeaderLeft";
+import { HeaderLogOut } from "@/components/home/HeaderLogOut";
+import { HeaderSheet } from "@/components/home/HeaderSheet";
+import { HeaderAddress } from "@/components/home/HeaderAddress";
 
 export const Header = () => {
   const { user } = useUser();

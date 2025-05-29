@@ -18,7 +18,7 @@ export const HeaderTab = () => {
   }, []);
 
   return (
-    <Tabs defaultValue="cart" className="mt-[24px]">
+    <Tabs defaultValue="cart">
       <TabsList className="w-[100%] rounded-full">
         <TabsTrigger
           value="cart"

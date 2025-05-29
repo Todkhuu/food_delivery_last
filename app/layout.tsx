@@ -4,10 +4,14 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { UserProvider } from "./(main)/_context/UserContext";
 import { FoodProvider } from "./(main)/_context/FoodContext";
+import { CartProvider } from "./(main)/_context/CartContext";
+import { CategoryProvider } from "./(main)/_context/CategoryContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
@@ -28,13 +32,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#404040]`}
       >
         <UserProvider>
-          <FoodProvider>
-            <Toaster />
-            <main>{children}</main>
-          </FoodProvider>
+          <CategoryProvider>
+            <FoodProvider>
+              <CartProvider>
+                <Toaster />
+                <main>{children}</main>
+              </CartProvider>
+            </FoodProvider>
+          </CategoryProvider>
         </UserProvider>
       </body>
     </html>

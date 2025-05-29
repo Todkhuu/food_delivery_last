@@ -16,8 +16,8 @@ export const HeaderSheet = () => {
       </SheetTrigger>
       <SheetContent className="min-w-[535px] bg-[#404040] border-none p-[32px] overflow-scroll rounded-l-[20px]">
         <SheetHeader>
-          <SheetTitle className="flex gap-3">
-            <ShoppingCart />
+          <SheetTitle className="flex items-center gap-3 ">
+            <ShoppingCart className="text-white" />
             <div className="text-white text-[20px]">Order detail</div>
           </SheetTitle>
         </SheetHeader>

@@ -1,6 +1,6 @@
+import { User } from "@/constants";
 import { FoodOrderStatusEnum } from "./common";
 import { Food } from "./food";
-import { User } from "./user";
 
 export type FoodOrderItem = {
   quantity: number;

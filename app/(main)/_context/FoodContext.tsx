@@ -1,5 +1,5 @@
 "use client";
-import { Food } from "@/types";
+import { FoodCategory } from "@/types";
 import axios from "axios";
 import {
   createContext,
@@ -10,8 +10,8 @@ import {
 } from "react";
 
 type FoodContextType = {
-  foods: Food[];
-  setFoods: (_foods: Food[]) => void;
+  foods: FoodCategory[];
+  setFoods: (_foods: FoodCategory[]) => void;
 };
 
 export const FoodContext = createContext<FoodContextType>(
@@ -23,9 +23,7 @@ export const useFood = () => {
 };
 
 export const FoodProvider = ({ children }: { children: ReactNode }) => {
-  const [foods, setFoods] = useState<Food[]>([]);
-
-  console.log("foods", foods);
+  const [foods, setFoods] = useState<FoodCategory[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       const food = await axios.get(`/api/food/with-categories`);

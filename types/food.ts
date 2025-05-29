@@ -7,6 +7,7 @@ export type Food = {
   image: string;
   ingredients: string;
   categoryId?: FoodCategory;
+  categoryName: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 };
