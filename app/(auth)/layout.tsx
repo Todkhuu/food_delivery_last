@@ -7,7 +7,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex h-screen">
-      <div className="w-[40%] h-full flex items-center justify-end pr-12">
+      <div className="w-[40%] h-full flex items-center justify-center pr-12">
         {children}
       </div>
       <AuthBigImage />
