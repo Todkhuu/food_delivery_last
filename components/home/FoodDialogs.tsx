@@ -10,9 +10,12 @@ import { Button } from "../ui/button";
 import { Food, FoodCategory } from "@/types";
 import { useCart } from "@/app/(main)/_context/CartContext";
 import { useState } from "react";
+import { useUser } from "@/app/(main)/_context/UserContext";
+import { toast } from "sonner";
 
 export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
   const { addToCart } = useCart();
+  const { user } = useUser();
   const [quantity, setQuantity] = useState(1);
   const [openDialogId, setOpenDialogId] = useState<string | null>(null);
   return (
@@ -86,8 +89,15 @@ export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
                     </div>
                     <Button
                       onClick={() => {
+                        if (!user?.address) {
+                          toast.error(
+                            "No address found. Please add your delivery address before adding to cart."
+                          );
+                          return;
+                        }
                         addToCart(food, quantity);
                         setOpenDialogId(null);
+                        toast.success("Food added to cart successfully!");
                       }}
                       className="w-[100%] h-[44px] rounded-full mt-[24px]"
                     >

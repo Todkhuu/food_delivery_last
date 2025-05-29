@@ -41,23 +41,23 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [cartItems]);
 
   const addToCart = (food: Food, quantity: number = 1) => {
-    setCartItems((prevItems) => {
-      const existing = prevItems.find((item) => item.food._id === food._id);
+    setCartItems((prevFoods) => {
+      const existing = prevFoods.find((foods) => foods.food._id === food._id);
       if (existing) {
-        return prevItems.map((item) =>
-          item.food._id === food._id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+        return prevFoods.map((foods) =>
+          foods.food._id === food._id
+            ? { ...foods, quantity: foods.quantity + quantity }
+            : foods
         );
       } else {
-        return [...prevItems, { food, quantity }];
+        return [...prevFoods, { food, quantity }];
       }
     });
   };
 
   const removeFromCart = (foodId: string) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.food._id !== foodId)
+    setCartItems((prevFoods) =>
+      prevFoods.filter((foods) => foods.food._id !== foodId)
     );
   };
 
@@ -65,9 +65,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (quantity < 1) {
       removeFromCart(foodId);
     } else {
-      setCartItems((prevItems) =>
-        prevItems.map((item) =>
-          item.food._id === foodId ? { ...item, quantity } : item
+      setCartItems((prevFoods) =>
+        prevFoods.map((foods) =>
+          foods.food._id === foodId ? { ...foods, quantity } : foods
         )
       );
     }
