@@ -18,7 +18,7 @@ export const UserContext = createContext<UserContextType>(
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [user, setUser] = useState<UserType | undefined>(undefined);
+  const [user, setUser] = useState<UserType | null>(null);
 
   const login = async (email: string, password: string) => {
     try {
@@ -45,7 +45,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const loadUser = async () => {
       const userId = localStorage.getItem("id");
       if (!userId) {
-        setUser(undefined);
+        setUser(null);
         return;
       }
       const data = await axios.post(`/api/auth/get-current-user`, { userId });
