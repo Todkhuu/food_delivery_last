@@ -1,12 +1,12 @@
 import { UserRoleEnum } from "./common";
-import { FoodOrder } from "./order";
+import { AllFoodOrders } from "./order";
 
 export type UserType = {
   _id?: string;
   email?: string;
   address?: string;
   role?: UserRoleEnum;
-  orderedFoods?: FoodOrder[];
+  orderedFoods?: AllFoodOrders[];
   createdAt?: Date;
   updatedAt?: Date;
 };

@@ -17,7 +17,13 @@ export async function POST(req: NextRequest) {
 
     const user = await UserModel.findById(userId)
       .select("-password")
-      .populate("orderedFoods");
+      .populate({
+        path: "orderedFoods",
+        populate: {
+          path: "foodOrderItems.food",
+          model: "Foods",
+        },
+      });
 
     if (!user) {
       return NextResponse.json(

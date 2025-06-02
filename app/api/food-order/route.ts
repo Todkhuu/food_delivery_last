@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { FoodOrderModel } from "@/server/models";
+import { FoodOrderModel, UserModel } from "@/server/models";
 import { connectMongoDB } from "@/server/database";
 import { FoodOrderStatusEnum } from "@/server/constants";
 
@@ -8,8 +8,17 @@ connectMongoDB();
 export async function POST(req: NextRequest) {
   try {
     const foodOrderData = await req.json();
+    const { user, totalPrice, foodOrderItems } = foodOrderData;
 
-    const newFoodOrder = await FoodOrderModel.create(foodOrderData);
+    const newFoodOrder = await FoodOrderModel.create({
+      user,
+      totalPrice,
+      foodOrderItems,
+    });
+
+    await UserModel.findByIdAndUpdate(user, {
+      $push: { orderedFoods: newFoodOrder._id },
+    });
 
     return NextResponse.json(
       { message: "Order successfully created", newFoodOrder },

@@ -9,7 +9,7 @@ export type FoodOrderItem = {
 
 export type FoodOrder = {
   total: number;
-  allFoodOrders: AllFoodOrders[];
+  foodOrderItems: AllFoodOrders[];
 };
 
 export type AllFoodOrders = {

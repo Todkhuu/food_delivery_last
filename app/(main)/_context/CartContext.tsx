@@ -7,14 +7,10 @@ import {
   ReactNode,
 } from "react";
 import { Food } from "@/types/food";
-
-type CartItem = {
-  food: Food;
-  quantity: number;
-};
+import { CartDataTypes } from "@/types";
 
 type CartContextType = {
-  cartItems: CartItem[];
+  cartItems: CartDataTypes[];
   addToCart: (food: Food, quantity?: number) => void;
   removeFromCart: (foodId: string) => void;
   updateQuantity: (foodId: string, quantity: number) => void;
@@ -25,7 +21,7 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartDataTypes[]>([]);
 
   console.log("Cart items:", cartItems);
 
