@@ -121,20 +121,20 @@ export const CartTabs = () => {
         <div className="flex flex-col gap-2 border-dashed border-b-[1px] pb-[20px]">
           <div className="flex justify-between">
             <p className="text-[16px] text-[#71717a]">Items</p>
-            <p className="text-[16px] font-semibold">
+            <p className="text-[16px] font-semibold text-[#71717a]">
               {!total ? "-" : `$ ${total}`}
             </p>
           </div>
           <div className="flex justify-between">
             <p className="text-[16px] text-[#71717a]">Shipping</p>
-            <p className="text-[16px] font-semibold">
+            <p className="text-[16px] font-semibold text-[#71717a]">
               {total == 0 ? "-" : `${shipping} $`}
             </p>
           </div>
         </div>
         <div className="flex justify-between mt-[20px]">
           <p className="text-[16px] text-[#71717a]">Total</p>
-          <p className="text-[16px] font-semibold">
+          <p className="text-[16px] font-semibold text-[#71717a]">
             {!total ? "-" : `$ ${total + shipping}`}
           </p>
         </div>
