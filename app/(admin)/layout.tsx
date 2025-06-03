@@ -7,9 +7,11 @@ type Props = {
 
 const Layout = (props: Props) => {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      {props.children}
+      <main className="flex-1 overflow-auto bg-gray-100 p-4">
+        {props.children}
+      </main>
     </div>
   );
 };

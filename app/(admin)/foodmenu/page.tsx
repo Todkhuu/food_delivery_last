@@ -10,7 +10,7 @@ export default function FoodMenu() {
   const { foods } = useFood();
   console.log("fooods", foods);
   return (
-    <div className="bg-[#f4f4f5] w-[90.8vw] px-[40px]">
+    <div className="bg-[#f4f4f5] px-[40px]">
       <div className="w-[87vw] flex justify-end my-[24px]">
         <AvatarDemo />
       </div>

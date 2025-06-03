@@ -5,7 +5,7 @@ import { Header } from "./_components/Header";
 
 export default function MainHome() {
   return (
-    <div>
+    <div className="bg-[#404040]">
       <Header />
       <Categories />
       <Foods />
