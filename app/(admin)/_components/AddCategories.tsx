@@ -51,42 +51,18 @@ export const AddCategories = () => {
     getDatas();
   }, []);
 
-  const createData = async (category: string) => {
-    const response = await fetch(`http://localhost:8000/food_category`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ categoryName: category }),
-    });
+  const createCategory = async (category: string) => {
+    await axios.post(`/api/food-category`, { categoryName: category });
     getDatas();
   };
 
-  const deleteData = async (id: string) => {
-    const response = await fetch(`http://localhost:8000/food_category/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const deleteCategory = async (id: string) => {
+    await axios.delete(`/api/food-category/${id}`);
     getDatas();
   };
 
-  const editData = async (id: string, categoryName: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/food_category/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ categoryName }),
-        }
-      );
-    } catch (error) {
-      console.log("error", error);
-    }
+  const editData = async (id: string, category: string) => {
+    await axios.patch(`/api/food-category/${id}`, { categoryName: category });
     getDatas();
   };
 
@@ -94,7 +70,7 @@ export const AddCategories = () => {
     if (isEdit) {
       editData(ids, values.categoryName);
     } else {
-      createData(values.categoryName);
+      createCategory(values.categoryName);
     }
   };
 
@@ -142,7 +118,7 @@ export const AddCategories = () => {
                 </ContextMenuItem>
                 <ContextMenuItem
                   className="p-0"
-                  onClick={() => deleteData(category._id)}
+                  onClick={() => deleteCategory(category._id)}
                 >
                   <p>Delete</p>
                 </ContextMenuItem>
@@ -161,7 +137,9 @@ export const AddCategories = () => {
         </div>
         <Dialog open={editCategory} onOpenChange={closeDialog}>
           <DialogContent>
-            <DialogTitle className="text-[18px]">Add new category</DialogTitle>
+            <DialogTitle className="text-[18px]">
+              {isEdit ? "Edit category" : "Add new category"}
+            </DialogTitle>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -182,7 +160,9 @@ export const AddCategories = () => {
                   )}
                 />
                 <div className="flex justify-end mt-[48px]">
-                  <Button type="submit">Add Category</Button>
+                  <Button type="submit">
+                    {isEdit ? "Edit Category" : "Add Category"}
+                  </Button>
                 </div>
               </form>
             </Form>
