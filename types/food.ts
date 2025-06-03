@@ -8,6 +8,7 @@ export type Food = {
   ingredients: string;
   categoryId?: FoodCategory;
   categoryName?: string;
+  categoriess?: string[];
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };

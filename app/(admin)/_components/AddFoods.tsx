@@ -56,7 +56,6 @@ export const AddFoods = ({ category }: categoryType) => {
       const imageUrl = await handleUpload();
       if (!imageUrl) return;
 
-      console.log("image uploaded ", imageUrl);
       await axios.post(`/api/food`, {
         ...food,
         image: imageUrl,
@@ -72,7 +71,6 @@ export const AddFoods = ({ category }: categoryType) => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     createFood(values);
   };
 

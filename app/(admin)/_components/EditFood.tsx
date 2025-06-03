@@ -8,7 +8,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
-import CloudinaryUpload from "./CloudinaryUpload";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,49 +22,51 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { ComboBox } from "../foodmenu/_components/ComboBox";
-import { Category, foodType } from "@/utils/types";
+import { Food, FoodCategory } from "@/types";
 
 const formSchema = z.object({
-  dishName: z.string().min(4).max(50),
-  dishCategory: z.string(),
-  Ingredients: z.string(),
+  foodName: z.string().min(4).max(50),
+  categories: z.string(),
+  ingredients: z.string(),
   price: z.number(),
-  foodImage: z.string(),
+  image: z.string(),
 });
 
 type editType = {
-  oneFood: foodType;
-  categories: Category[];
+  oneFood: Food;
+  categories: FoodCategory[];
 };
 
 export const EditFood = ({ oneFood, categories }: editType) => {
   const [ids, setIds] = useState<string>("");
+  console.log("ids", ids);
+  console.log("oneFood", oneFood);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      dishName: "",
-      dishCategory: "",
-      Ingredients: "",
-      price: 0,
-      foodImage: "",
+      foodName: oneFood.foodName,
+      categories: oneFood.categoryName,
+      ingredients: oneFood.ingredients,
+      price: oneFood.price,
+      image: oneFood.image,
     },
   });
 
-  const editFood = async (id: string, dishName: string) => {
-    const response = await fetch(`http://localhost:8000/foods/${id}`, {
+  const editFood = async (id: string, values: Food) => {
+    const response = await fetch(`/api/food/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ dishName }),
+      body: JSON.stringify({ values }),
     });
     // getDatas();
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    editFood(ids, values.dishName);
-    // setIds(foods._id);
+    editFood(ids, values);
+    setIds(oneFood._id!);
   };
 
   const deleteFood = async (id: string) => {
@@ -96,7 +97,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
-                name="dishName"
+                name="foodName"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center">
                     <FormLabel className="text-[12px] text-[#71717a]">
@@ -105,7 +106,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
                     <FormControl>
                       <Input
                         onClick={() =>
-                          form.setValue("dishName", oneFood.foodName)
+                          form.setValue("foodName", oneFood.foodName)
                         }
                         className="w-[288px]"
                         placeholder=""
@@ -118,7 +119,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
               />
               <FormField
                 control={form.control}
-                name="dishCategory"
+                name="categories"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center">
                     <FormLabel className="text-[12px] text-[#71717a]">
@@ -133,7 +134,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
               />
               <FormField
                 control={form.control}
-                name="Ingredients"
+                name="ingredients"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center">
                     <FormLabel className="text-[12px] text-[#71717a]">
@@ -142,7 +143,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
                     <FormControl>
                       <Textarea
                         onClick={() =>
-                          form.setValue("Ingredients", oneFood.ingredients)
+                          form.setValue("ingredients", oneFood.ingredients)
                         }
                         className="w-[288px]"
                         placeholder=""
@@ -175,7 +176,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
               />
               <FormField
                 control={form.control}
-                name="foodImage"
+                name="image"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center">
                     <FormLabel className="text-[12px] text-[#71717a]">
@@ -192,7 +193,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
               />
               <div className="flex justify-between mt-[36px]">
                 <Button
-                  onClick={() => deleteFood(oneFood._id)}
+                  onClick={() => deleteFood(oneFood._id!)}
                   variant={"ghost"}
                   className="border-[1px] p-3"
                 >
