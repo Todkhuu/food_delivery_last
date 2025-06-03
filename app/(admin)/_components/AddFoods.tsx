@@ -23,12 +23,12 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import { Food, FoodCategory } from "@/types";
-import { useFood } from "@/app/(main)/_context/FoodContext";
 import axios from "axios";
+import { useFood } from "@/app/(main)/_context/FoodContext";
 
 const formSchema = z.object({
   foodName: z.string().min(4).max(100),
-  price: z.coerce.number(),
+  price: z.coerce.number().positive("Price must be greater than 0"),
   ingredients: z.string().min(4).max(100),
   image: z.string(),
 });
@@ -38,7 +38,8 @@ type categoryType = {
 };
 
 export const AddFoods = ({ category }: categoryType) => {
-  const { setFoods } = useFood();
+  const [open, setOpen] = useState(false);
+  const { fetchData } = useFood();
   const [file, setFile] = useState<File>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,14 +55,17 @@ export const AddFoods = ({ category }: categoryType) => {
     try {
       const imageUrl = await handleUpload();
       if (!imageUrl) return;
+
       console.log("image uploaded ", imageUrl);
       await axios.post(`/api/food`, {
         ...food,
         image: imageUrl,
         category: category._id,
       });
-      // closeDialog
-      setFoods;
+      form.reset();
+      setFile(undefined);
+      setOpen(false);
+      fetchData();
     } catch (error) {
       console.log("Error", error);
     }
@@ -69,7 +73,7 @@ export const AddFoods = ({ category }: categoryType) => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    // createFood(values);
+    createFood(values);
   };
 
   const handleFile = (file: File) => {
@@ -106,7 +110,7 @@ export const AddFoods = ({ category }: categoryType) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="min-w-[270px] h-[241px] border-dashed border-[1px] rounded-[20px] border-[#ef4444] flex flex-col justify-center items-center">
         <Image src={"/iconButton.png"} width={40} height={40} alt="" />
         <p className="w-[154px] text-[14px] mt-[24px]">

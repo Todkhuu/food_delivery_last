@@ -12,6 +12,7 @@ import {
 type FoodContextType = {
   foods: FoodCategory[];
   setFoods: (_foods: FoodCategory[]) => void;
+  fetchData: () => void;
 };
 
 export const FoodContext = createContext<FoodContextType>(
@@ -24,16 +25,17 @@ export const useFood = () => {
 
 export const FoodProvider = ({ children }: { children: ReactNode }) => {
   const [foods, setFoods] = useState<FoodCategory[]>([]);
+
+  const fetchData = async () => {
+    const food = await axios.get(`/api/food/with-categories`);
+    setFoods(food.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const food = await axios.get(`/api/food/with-categories`);
-      setFoods(food.data);
-    };
     fetchData();
   }, []);
 
   return (
-    <FoodContext.Provider value={{ foods, setFoods }}>
+    <FoodContext.Provider value={{ foods, setFoods, fetchData }}>
       {children}
     </FoodContext.Provider>
   );

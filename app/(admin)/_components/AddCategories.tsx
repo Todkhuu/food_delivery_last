@@ -54,17 +54,22 @@ export const AddCategories = () => {
 
   const createCategory = async (category: string) => {
     await axios.post(`/api/food-category`, { categoryName: category });
-    getDatas();
+    await getDatas();
+    setEditCategory(false);
+    toast.success("Category added successfully");
   };
 
   const deleteCategory = async (id: string) => {
     await axios.delete(`/api/food-category/${id}`);
     getDatas();
+    toast.success("Category deleted successfully");
   };
 
   const editData = async (id: string, category: string) => {
     await axios.patch(`/api/food-category/${id}`, { categoryName: category });
     getDatas();
+    setEditCategory(false);
+    toast.success("Category updated successfully");
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {

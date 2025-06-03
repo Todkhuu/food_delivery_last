@@ -17,7 +17,7 @@ export async function GET(_: NextRequest) {
       },
       {
         $project: {
-          Id: "$_id",
+          _id: "$_id",
           categoryName: "$categoryName",
           count: { $size: "$foods" },
           foods: "$foods",
@@ -26,7 +26,7 @@ export async function GET(_: NextRequest) {
     ]);
 
     const formattedResponse = foodCategoriesWithCount.map((category) => ({
-      Id: category.Id.toString(),
+      _id: category._id.toString(),
       categoryName: category.categoryName,
       count: category.count,
       foods:
