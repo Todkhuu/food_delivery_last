@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/context-menu";
 import { FoodCategory } from "@/types";
 import axios from "axios";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   categoryName: z.string().min(4).max(50),
@@ -118,7 +119,15 @@ export const AddCategories = () => {
                 </ContextMenuItem>
                 <ContextMenuItem
                   className="p-0"
-                  onClick={() => deleteCategory(category._id)}
+                  onClick={() => {
+                    if (category.count > 0) {
+                      toast.error(
+                        "This category contains foods. Please remove them first."
+                      );
+                      return;
+                    }
+                    deleteCategory(category._id);
+                  }}
                 >
                   <p>Delete</p>
                 </ContextMenuItem>
