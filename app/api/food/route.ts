@@ -36,7 +36,6 @@ export async function GET(req: NextRequest) {
 export async function POST(req: Request) {
   try {
     const foodData = await req.json();
-    console.log("foodData", foodData);
 
     const newFood = await FoodModel.create(foodData);
 

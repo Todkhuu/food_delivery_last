@@ -6,4 +6,5 @@ export type FoodCategory = {
   foods: Food[];
   createdAt: Date;
   updatedAt: Date;
+  count: number;
 };
