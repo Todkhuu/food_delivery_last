@@ -23,29 +23,35 @@ import {
 import { useState } from "react";
 import { ComboBox } from "../foodmenu/_components/ComboBox";
 import { Food, FoodCategory } from "@/types";
+import CloudinaryUpload from "./CloudinaryUpload";
+import axios from "axios";
+import { useFood } from "@/app/(main)/_context/FoodContext";
 
 const formSchema = z.object({
   foodName: z.string().min(4).max(50),
   categories: z.string(),
   ingredients: z.string(),
-  price: z.number(),
+  price: z.string(),
   image: z.string(),
 });
 
 type editType = {
   oneFood: Food;
   categories: FoodCategory[];
+  category: FoodCategory;
 };
 
-export const EditFood = ({ oneFood, categories }: editType) => {
-  const [ids, setIds] = useState<string>("");
-  console.log("ids", ids);
-  console.log("oneFood", oneFood);
+export const EditFood = ({ oneFood, categories, category }: editType) => {
+  const [file, setFile] = useState<File>();
+  const [currentCategory, setCurrentCategory] = useState<string | undefined>(
+    category._id
+  );
+  const { fetchData } = useFood();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       foodName: oneFood.foodName,
-      categories: oneFood.categoryName,
+      categories: category._id,
       ingredients: oneFood.ingredients,
       price: oneFood.price,
       image: oneFood.image,
@@ -53,20 +59,50 @@ export const EditFood = ({ oneFood, categories }: editType) => {
   });
 
   const editFood = async (id: string, values: Food) => {
-    const response = await fetch(`/api/food/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ values }),
+    let imageUrl = values.image;
+    if (file) {
+      imageUrl = await handleUpload();
+    }
+    await axios.patch(`/api/food/${id}`, {
+      ...values,
+      image: imageUrl,
+      category: currentCategory,
     });
-    // getDatas();
+    fetchData();
+  };
+
+  const handleFile = (file: File) => {
+    setFile(file);
+  };
+
+  const handleUpload = async () => {
+    const PRESET_NAME = "food-delivery-app";
+    const CLOUDINARY_NAME = "ds6kxgjh0";
+
+    const formData = new FormData();
+    formData.append("file", file!);
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("api_key", CLOUDINARY_NAME);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
+      return data.secure_url;
+    } catch (err) {
+      console.error(err);
+      alert("Failed to upload file");
+    }
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    editFood(ids, values);
-    setIds(oneFood._id!);
+    editFood(oneFood._id!, values);
   };
 
   const deleteFood = async (id: string) => {
@@ -76,7 +112,7 @@ export const EditFood = ({ oneFood, categories }: editType) => {
         "Content-Type": "application/json",
       },
     });
-    // getDatas();
+    fetchData();
   };
 
   return (
@@ -126,7 +162,11 @@ export const EditFood = ({ oneFood, categories }: editType) => {
                       Dish category
                     </FormLabel>
                     <FormControl>
-                      <ComboBox categories={categories} />
+                      <ComboBox
+                        categories={categories}
+                        defaultValue={category.categoryName}
+                        setCurrentCategory={setCurrentCategory}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -184,7 +224,10 @@ export const EditFood = ({ oneFood, categories }: editType) => {
                     </FormLabel>
                     <FormControl>
                       <div className="w-[288px] h-[116px]">
-                        {/* <CloudinaryUpload /> */}
+                        <CloudinaryUpload
+                          handleFile={handleFile}
+                          defaultImage={oneFood.image}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />

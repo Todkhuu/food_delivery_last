@@ -4,7 +4,7 @@ import { FoodCategoryModelType } from "./food-category.type";
 export type FoodModelType = {
   _id: Schema.Types.ObjectId;
   foodName: string;
-  price: number;
+  price: string;
   image: string;
   ingredients: string;
   category: FoodCategoryModelType;

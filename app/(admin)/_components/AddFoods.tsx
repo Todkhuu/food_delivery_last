@@ -28,7 +28,7 @@ import { useFood } from "@/app/(main)/_context/FoodContext";
 
 const formSchema = z.object({
   foodName: z.string().min(4).max(100),
-  price: z.coerce.number().positive("Price must be greater than 0"),
+  price: z.string(),
   ingredients: z.string().min(4).max(100),
   image: z.string(),
 });
@@ -45,7 +45,7 @@ export const AddFoods = ({ category }: categoryType) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       foodName: "",
-      price: 0,
+      price: "",
       ingredients: "",
       image: "",
     },
@@ -147,7 +147,7 @@ export const AddFoods = ({ category }: categoryType) => {
                     <FormLabel>Food price</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
+                        type="text"
                         className="w-[194px]"
                         placeholder="Enter price..."
                         {...field}

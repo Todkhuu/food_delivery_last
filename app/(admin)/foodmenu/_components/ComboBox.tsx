@@ -17,9 +17,20 @@ import {
 } from "@/components/ui/popover";
 import { FoodCategory } from "@/types";
 
-export const ComboBox = ({ categories }: { categories: FoodCategory[] }) => {
+type Props = {
+  categories: FoodCategory[];
+  defaultValue?: string;
+  setCurrentCategory: React.Dispatch<React.SetStateAction<string | undefined>>;
+};
+
+export const ComboBox = ({
+  categories,
+  defaultValue,
+  setCurrentCategory,
+}: Props) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(defaultValue || "");
+  console.log("defaultValue", defaultValue);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -37,7 +48,7 @@ export const ComboBox = ({ categories }: { categories: FoodCategory[] }) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        {/* <Command>
+        <Command>
           <CommandList>
             <CommandGroup>
               {categories.map((framework) => (
@@ -46,6 +57,7 @@ export const ComboBox = ({ categories }: { categories: FoodCategory[] }) => {
                   value={framework.categoryName}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
+                    setCurrentCategory(framework._id);
                     setOpen(false);
                   }}
                 >
@@ -62,7 +74,7 @@ export const ComboBox = ({ categories }: { categories: FoodCategory[] }) => {
               ))}
             </CommandGroup>
           </CommandList>
-        </Command> */}
+        </Command>
       </PopoverContent>
     </Popover>
   );

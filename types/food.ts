@@ -3,7 +3,7 @@ import { FoodCategory } from "./category";
 export type Food = {
   _id?: string;
   foodName: string;
-  price: number;
+  price: string;
   image: string;
   ingredients: string;
   categoryId?: FoodCategory;

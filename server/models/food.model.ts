@@ -4,7 +4,7 @@ import { Model, Schema, model, models } from "mongoose";
 const FoodSchema = new Schema<FoodModelType>(
   {
     foodName: { type: String, required: true },
-    price: { type: Number, required: true },
+    price: { type: String, required: true },
     image: { type: String, required: true },
     ingredients: { type: String, required: true },
     category: {

@@ -36,8 +36,10 @@ export async function PATCH(
   { params }: { params: { foodId: string } }
 ) {
   try {
-    const { foodId } = params;
+    const { foodId } = await params;
     const foodData = await req.json();
+
+    console.log("BODY DATA", foodData);
 
     const updatedFood = await FoodModel.findByIdAndUpdate(foodId, foodData, {
       new: true,

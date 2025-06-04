@@ -8,6 +8,7 @@ type categoryType = {
 };
 
 export const AddedFoods = ({ category, categories }: categoryType) => {
+  console.log("category", category);
   return (
     <>
       {category.foods.map((oneFood: Food) => {
@@ -20,7 +21,11 @@ export const AddedFoods = ({ category, categories }: categoryType) => {
               style={{ backgroundImage: `url(${oneFood.image})` }}
               className="w-[100%] h-[129px] rounded-xl bg-center bg-cover flex items-end justify-end p-[20px]"
             >
-              <EditFood oneFood={oneFood} categories={categories} />
+              <EditFood
+                oneFood={oneFood}
+                category={category}
+                categories={categories}
+              />
             </div>
             <div className="flex justify-between mt-[20px]">
               <h2 className="text-[#ef4444] text-[14px] ">

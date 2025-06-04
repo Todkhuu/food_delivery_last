@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useState } from "react";
 import { FileImage } from "lucide-react";
 
-const CloudinaryUpload = ({
-  handleFile,
-}: {
+type Props = {
+  defaultImage?: string;
   handleFile: (_file: File) => void;
-}) => {
-  const [image, setImage] = useState("");
+};
+
+const CloudinaryUpload = ({ handleFile, defaultImage }: Props) => {
+  const [image, setImage] = useState(defaultImage || "");
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -24,7 +25,6 @@ const CloudinaryUpload = ({
 
   return (
     <label htmlFor="file-input">
-      {/* <Button onClick={handleUpload}>Upload</Button> */}
       {image ? (
         <div>
           <Image
