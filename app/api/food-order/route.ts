@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       user,
       totalPrice,
       foodOrderItems,
+      status: "Pending",
     });
 
     await UserModel.findByIdAndUpdate(user, {

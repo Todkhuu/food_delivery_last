@@ -13,13 +13,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TabsContent } from "../ui/tabs";
+import { toast } from "sonner";
 
 export const CartTabs = () => {
   const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
   const { user } = useUser();
 
   const total = cartItems.reduce(
-    (acc, item) => acc + item.food.price * item.quantity,
+    (acc, item) => acc + Number(item.food.price) * item.quantity,
     0
   );
   const shipping = 0.99;
@@ -30,16 +31,17 @@ export const CartTabs = () => {
         user: user?._id,
         foodOrderItems: cartItems,
         totalPrice: total + shipping,
+        status: "Pending",
       });
 
       if (res.status === 201) {
         clearCart();
       } else {
-        alert("Checkout failed: " + res.data.message);
+        toast("Checkout failed: " + res.data.message);
       }
     } catch (error: any) {
       console.error(error);
-      alert(
+      toast(
         "Checkout error: " + (error.response?.data?.message || "Unknown error")
       );
     }
@@ -83,7 +85,7 @@ export const CartTabs = () => {
                     <Button
                       variant={"outline"}
                       className="rounded-full text-red-500 border-red-500 h-[42px]"
-                      onClick={() => removeFromCart(foods.food._id)}
+                      onClick={() => removeFromCart(foods.food._id!)}
                     >
                       X
                     </Button>
@@ -92,7 +94,7 @@ export const CartTabs = () => {
                     <div className="flex items-center gap-2 my-2">
                       <button
                         onClick={() =>
-                          updateQuantity(foods.food._id, foods.quantity - 1)
+                          updateQuantity(foods.food._id!, foods.quantity - 1)
                         }
                         className="w-9 h-9 flex items-center justify-center"
                       >
@@ -101,14 +103,14 @@ export const CartTabs = () => {
                       <span>{foods.quantity}</span>
                       <button
                         onClick={() =>
-                          updateQuantity(foods.food._id, foods.quantity + 1)
+                          updateQuantity(foods.food._id!, foods.quantity + 1)
                         }
                         className="w-9 h-9 flex items-center justify-center"
                       >
                         <Plus size={16} />
                       </button>
                     </div>
-                    <p>${foods.food.price * foods.quantity}</p>
+                    <p>${Number(foods.food.price) * foods.quantity}</p>
                   </div>
                 </div>
               </div>

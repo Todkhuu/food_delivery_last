@@ -1,5 +1,4 @@
 import { AvatarDemo } from "../_components/Avatar";
-import { Tables } from "../_components/Table";
 import { DataTableDemo } from "../_components/Tables";
 
 const Orders = () => {
@@ -8,7 +7,6 @@ const Orders = () => {
       <div className="w-[80vw] flex justify-end my-[24px]">
         <AvatarDemo />
       </div>
-      {/* <Tables /> */}
       <DataTableDemo />
     </div>
   );
