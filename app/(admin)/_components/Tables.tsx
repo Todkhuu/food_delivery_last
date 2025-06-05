@@ -207,21 +207,27 @@ export function DataTableDemo() {
 
   console.log("data", data);
 
-  // Статус солих функц
   async function handleStatusChange(
     ids: string[],
     newStatus: FoodOrderStatusEnum
   ): Promise<void> {
     try {
-      await axios.patch(`/api/food-order/ids/${ids}`, { status: newStatus });
-
-      // Хүсэлт амжилттай болсны дараа өгөгдлийг дахин ачаалах эсвэл шинэчлэх хэсэг
-      // Жишээ нь: таны өгөгдлийг refresh хийх код энд орно
+      const idsStr = ids.join(",");
+      await axios.patch(`/api/food-order/ids`, {
+        ids,
+        status: newStatus,
+      });
       console.log("Status updated for all selected orders.");
     } catch (error) {
       console.error("Error updating order statuses:", error);
-      // Алдааны мэдэгдэл үзүүлэх эсвэл бусад алдааны менежмент хийж болно
     }
+  }
+  function handleSingleStatusChange(
+    id: string,
+    newStatus: FoodOrderStatusEnum
+  ): void {
+    // Таны асинхрон функцыг дуудахдаа .catch хийх нь сайн
+    handleStatusChange([id], newStatus).catch(console.error);
   }
 
   // fetch data
@@ -243,7 +249,11 @@ export function DataTableDemo() {
 
   const table = useReactTable({
     data,
-    columns: getColumns(handleStatusChange, selectedRows, setSelectedRows),
+    columns: getColumns(
+      handleSingleStatusChange,
+      selectedRows,
+      setSelectedRows
+    ),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),

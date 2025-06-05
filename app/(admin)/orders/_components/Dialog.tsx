@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,6 +21,11 @@ export const Dialogs = ({
     newStatus: FoodOrderStatusEnum
   ) => Promise<void>;
 }) => {
+  // Статус хадгалах state
+  const [selectedStatus, setSelectedStatus] = useState<FoodOrderStatusEnum>(
+    FoodOrderStatusEnum.Pending // default утга (таны enum-д тохируулаарай)
+  );
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,11 +39,26 @@ export const Dialogs = ({
         </DialogHeader>
         <div>
           <p>You are about to update {selectedOrders.length} order(s).</p>
+
+          {/* Статус сонгох хэсэг */}
+          <select
+            value={selectedStatus}
+            onChange={(e) =>
+              setSelectedStatus(e.target.value as FoodOrderStatusEnum)
+            }
+            style={{ marginBottom: "1rem" }}
+          >
+            {/* Та өөрийн FoodOrderStatusEnum-д тааруулж утгуудыг нэмээрэй */}
+            <option value={FoodOrderStatusEnum.Pending}>Pending</option>
+            <option value={FoodOrderStatusEnum.Delivered}>Delivered</option>
+            <option value={FoodOrderStatusEnum.Cancelled}>Cancelled</option>
+          </select>
+
           <Button
             onClick={() =>
               onChangeState(
                 selectedOrders.map((order) => order._id),
-                FoodOrderStatusEnum.Delivered
+                selectedStatus
               )
             }
           >

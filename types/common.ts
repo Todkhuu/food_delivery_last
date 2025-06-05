@@ -1,12 +1,12 @@
 export enum FoodOrderStatusEnum {
   Delivered = "Delivered",
   Pending = "Pending",
-  Canceled = "Canceled",
+  Cancelled = "Cancelled",
 }
 
 export const statusClasses: Record<FoodOrderStatusEnum, string> = {
   [FoodOrderStatusEnum.Pending]: "border-red-500",
-  [FoodOrderStatusEnum.Canceled]: "border-border",
+  [FoodOrderStatusEnum.Cancelled]: "border-border",
   [FoodOrderStatusEnum.Delivered]: "border-green-500",
 };
 
