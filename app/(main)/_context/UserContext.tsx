@@ -49,7 +49,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
       const data = await axios.post(`/api/auth/get-current-user`, { userId });
-      console.log("data", data?.data.user);
       setUser(data?.data.user);
     };
     loadUser();

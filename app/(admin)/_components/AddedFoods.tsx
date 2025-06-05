@@ -8,7 +8,6 @@ type categoryType = {
 };
 
 export const AddedFoods = ({ category, categories }: categoryType) => {
-  console.log("category", category);
   return (
     <>
       {category.foods.map((oneFood: Food) => {

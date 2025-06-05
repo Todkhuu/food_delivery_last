@@ -101,17 +101,11 @@ export const EditFood = ({ oneFood, categories, category }: editType) => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     editFood(oneFood._id!, values);
   };
 
   const deleteFood = async (id: string) => {
-    const response = await fetch(`http://localhost:8000/foods/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await axios.delete(`/api/food/${id}`);
     fetchData();
   };
 

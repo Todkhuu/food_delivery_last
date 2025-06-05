@@ -13,20 +13,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -35,138 +31,168 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DatePickerWithRange } from "@/components/DateRangePicker";
+import { DatePickerWithRange } from "./DateRangePicker";
+import { AllFoodOrders, FoodOrderStatusEnum } from "@/types";
+import axios from "axios";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Image from "next/image";
+import { Dialogs } from "../orders/_components/Dialog";
 
-const data: Payment[] = [
-  {
-    _id: "m5gr84i9",
-    amount: 316,
-    status: "Pending",
-    email: "ken99@example.com",
-    number: 1,
-    food: ["Sunshine Stackers", "Sunshine Stackers"],
-    date: "2025-03-11",
-  },
-  {
-    _id: "3u1reuv4",
-    amount: 242,
-    status: "Canceled",
-    email: "Abe45@example.com",
-    number: 2,
-    food: ["Sunshine Stackers", "Sunshine Stackers"],
-    date: "2025-03-11",
-  },
-];
-
-export type Payment = {
-  _id: string;
-  amount: number;
-  status: "Pending" | "Canceled" | "Delivered";
-  email: string;
-  number: number;
-  food: string[];
-  date: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "number",
-    header: "№",
-  },
-  {
-    accessorKey: "email",
-    header: "Customer",
-  },
-  {
-    accessorKey: `food.length`,
-    header: "Food",
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-  },
-  {
-    accessorKey: "d",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown />
-        </Button>
-      );
+// Column тодорхойлолт
+const getColumns = (
+  handleStatusChange: (id: string, newStatus: FoodOrderStatusEnum) => void,
+  selectedRows: any[],
+  setSelectedRows: React.Dispatch<React.SetStateAction<any[]>>
+): ColumnDef<AllFoodOrders>[] => {
+  return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => {
+            table.toggleAllPageRowsSelected(!!value);
+            setSelectedRows(
+              !!value ? table.getRowModel().rows.map((row) => row.original) : []
+            );
+          }}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value);
+            setSelectedRows((prev) => {
+              if (!!value) return [...prev, row.original];
+              return prev.filter((r) => r._id !== row.original._id);
+            });
+          }}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
     },
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div>Total</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div>{formatted}</div>;
+    {
+      accessorKey: "number",
+      header: "№",
+      cell: ({ row }) => {
+        return <div>{row.index + 1}</div>;
+      },
     },
-  },
-  {
-    // id: "actions",
-    // enableHiding: false,
-    accessorKey: "status",
-    header: "Delivery state",
-    cell: ({ row }) => {
-      const payment = row.original;
-      data?.map((data) => {
+    {
+      header: "Customer",
+      accessorFn: (row) => row.user?.email,
+    },
+    {
+      header: "Food",
+      accessorKey: "food",
+      cell: ({ row }) => {
+        const order = row.original;
+        const itemsCount = order.foodOrderItems.length;
+
+        return (
+          <Popover>
+            <PopoverTrigger asChild>
+              <p>{itemsCount} foods</p>
+            </PopoverTrigger>
+            <PopoverContent className="w-60">
+              <div className="flex flex-col gap-3">
+                {order.foodOrderItems.map((item, idx) => {
+                  return (
+                    <div key={idx} className="flex items-center gap-[10px]">
+                      <Image
+                        width={32}
+                        height={30}
+                        alt="foodImg"
+                        src={item.food.image}
+                        className="w-[32px] h-[30px] rounded-[4px]"
+                      />
+                      <p className="text-[12px] w-[171px]">
+                        {item.food.foodName}
+                      </p>
+                      <p className="text-[12px]">x{item.quantity}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </PopoverContent>
+          </Popover>
+        );
+      },
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Date",
+      cell: ({ row }) => {
+        const dateStr = row.getValue("createdAt") as string;
+        const date = new Date(dateStr);
+        return <div>{date.toLocaleDateString()}</div>;
+      },
+    },
+    {
+      accessorKey: "totalPrice",
+      header: () => <div>Total</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("totalPrice"));
+        if (isNaN(amount)) return <div>-</div>;
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+        return <div>{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Delivery state",
+      cell: ({ row }) => {
+        const order = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button defaultValue={data.status[0]} variant="ghost">
-                {data.status[0]}
+              <Button variant="ghost" className="capitalize">
+                {order.status}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment._id)}
+                onClick={() => navigator.clipboard.writeText(order._id)}
               >
-                Copy payment ID
+                Copy Order ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  handleStatusChange(order._id, FoodOrderStatusEnum.Pending)
+                }
+              >
+                Mark as Pending
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  handleStatusChange(order._id, FoodOrderStatusEnum.Delivered)
+                }
+              >
+                Mark as Delivered
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
-      });
+      },
     },
-  },
-];
+  ];
+};
 
 export function DataTableDemo() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -176,16 +202,54 @@ export function DataTableDemo() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [data, setData] = React.useState<AllFoodOrders[]>([]);
+  const [selectedRows, setSelectedRows] = React.useState<any[]>([]);
+
+  console.log("data", data);
+
+  // Статус солих функц
+  async function handleStatusChange(
+    ids: string[],
+    newStatus: FoodOrderStatusEnum
+  ): Promise<void> {
+    try {
+      await axios.patch(`/api/food-order/ids/${ids}`, { status: newStatus });
+
+      // Хүсэлт амжилттай болсны дараа өгөгдлийг дахин ачаалах эсвэл шинэчлэх хэсэг
+      // Жишээ нь: таны өгөгдлийг refresh хийх код энд орно
+      console.log("Status updated for all selected orders.");
+    } catch (error) {
+      console.error("Error updating order statuses:", error);
+      // Алдааны мэдэгдэл үзүүлэх эсвэл бусад алдааны менежмент хийж болно
+    }
+  }
+
+  // fetch data
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/food-order");
+        const fetchedOrders = res.data.allFoodOrders.map((item: any) => ({
+          ...item,
+          status: item.status as FoodOrderStatusEnum,
+        }));
+        setData(fetchedOrders);
+      } catch (err) {
+        console.error("Failed to fetch data", err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const table = useReactTable({
     data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    columns: getColumns(handleStatusChange, selectedRows, setSelectedRows),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -205,40 +269,31 @@ export function DataTableDemo() {
         </div>
         <div className="flex gap-3">
           <DatePickerWithRange />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="default" className="rounded-full">
-                Change delivery state
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {data.map((data) => {
-                return <div key={data._id}>{data.status}</div>;
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
+        <Dialogs
+          selectedOrders={selectedRows}
+          onChangeState={handleStatusChange}
+        />
       </div>
       <div className="border-t-[1px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -259,7 +314,7 @@ export function DataTableDemo() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={table.getAllColumns().length}
                   className="h-24 text-center"
                 >
                   No results.

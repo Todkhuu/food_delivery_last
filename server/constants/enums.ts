@@ -1,7 +1,7 @@
 export enum FoodOrderStatusEnum {
-  PENDING = "PENDING",
-  CANCELED = "CANCELED",
-  DELIVERED = "DELIVERED",
+  Pending = "Pending",
+  Canceled = "Canceled",
+  Delivered = "Delivered",
 }
 
 export enum UserRoleEnum {

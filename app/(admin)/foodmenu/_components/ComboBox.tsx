@@ -30,7 +30,6 @@ export const ComboBox = ({
 }: Props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(defaultValue || "");
-  console.log("defaultValue", defaultValue);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

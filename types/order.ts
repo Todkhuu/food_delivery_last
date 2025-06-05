@@ -16,7 +16,7 @@ export type AllFoodOrders = {
   _id: string;
   user: User;
   totalPrice: number;
-  status: FoodOrderStatusEnum;
+  status: FoodOrderStatusEnum | string;
   foodOrderItems: FoodOrderItem[];
   createdAt: Date;
   updatedAt: Date;

@@ -25,7 +25,6 @@ export const HeaderAddress = () => {
       const response = await axios.patch(`/api/auth/${user._id}`, {
         address: address,
       });
-      console.log("Амжилттай шинэчлэгдлээ:", response.data);
       updateUser({ address });
       setOpen(false);
     } catch (error) {

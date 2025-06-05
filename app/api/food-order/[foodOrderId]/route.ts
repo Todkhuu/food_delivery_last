@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FoodOrderModel } from "@/server/models";
 import { connectMongoDB } from "@/server/database";
+import { FoodOrderStatusEnum } from "@/server/constants";
 
 connectMongoDB();
 
@@ -9,7 +10,7 @@ export async function PATCH(
   { params }: { params: { foodOrderId: string } }
 ) {
   try {
-    const { foodOrderId } = params;
+    const { foodOrderId } = await params;
     const updateData = await req.json();
 
     const updatedFoodOrder = await FoodOrderModel.findByIdAndUpdate(

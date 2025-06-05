@@ -23,8 +23,6 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartDataTypes[]>([]);
 
-  console.log("Cart items:", cartItems);
-
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -74,7 +72,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.food.price * item.quantity,
+    (total, item) => total + Number(item.food.price) * item.quantity,
     0
   );
 

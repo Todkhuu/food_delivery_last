@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    const status = searchParams.get("status") || FoodOrderStatusEnum.PENDING;
+    const status = searchParams.get("status") || FoodOrderStatusEnum.Pending;
     const offset = Number(searchParams.get("offset") || 0);
     const limit = Number(searchParams.get("limit") || 20);
 
