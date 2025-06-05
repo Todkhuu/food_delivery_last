@@ -25,7 +25,9 @@ export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
           <Dialog
             key={index}
             open={openDialogId === food._id}
-            onOpenChange={(isOpen) => setOpenDialogId(isOpen ? food._id : null)}
+            onOpenChange={(isOpen) =>
+              setOpenDialogId(isOpen ? food?._id ?? null : null)
+            }
           >
             <DialogTrigger className="text-left">
               <Card className="w-[397px] h-[342px] rounded-[20px] p-[16px] overflow-hidden">
@@ -36,7 +38,7 @@ export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
                   className="w-[365px] h-[210px] rounded-xl bg-center bg-cover"
                 ></div>
                 <CardContent className="px-0">
-                  <div className="flex justify-between mt-[20px]">
+                  <div className="flex justify-between">
                     <h2 className="text-[#ef4444] text-[24px] font-semibold line-clamp-1">
                       {food.foodName}
                     </h2>
@@ -68,7 +70,7 @@ export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
                       <div>
                         <p className="text-[16px]">Total price</p>
                         <h3 className="text-[24px] font-semibold text-[#09090b]">
-                          ${food.price * quantity}
+                          ${Number(food.price) * quantity}
                         </h3>
                       </div>
                       <div className="flex items-center gap-2">
