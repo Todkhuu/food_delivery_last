@@ -114,11 +114,11 @@ const getColumns = (
                         width={32}
                         height={30}
                         alt="foodImg"
-                        src={item.food.image}
+                        src={item.food?.image || ""}
                         className="w-[32px] h-[30px] rounded-[4px]"
                       />
                       <p className="text-[12px] w-[171px]">
-                        {item.food.foodName}
+                        {item.food?.foodName || ""}
                       </p>
                       <p className="text-[12px]">x{item.quantity}</p>
                     </div>
@@ -204,8 +204,6 @@ export function DataTableDemo() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [data, setData] = React.useState<AllFoodOrders[]>([]);
   const [selectedRows, setSelectedRows] = React.useState<any[]>([]);
-
-  console.log("data", data);
 
   async function handleStatusChange(
     ids: string[],

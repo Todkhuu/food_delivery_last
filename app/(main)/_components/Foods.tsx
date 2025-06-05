@@ -8,16 +8,18 @@ export const Foods = () => {
 
   return (
     <div className="max-w-[1264px] m-auto mt-[72px]">
-      {foods.map((category: FoodCategory, index: number) => {
-        return (
-          <div key={index}>
-            <h2 className="text-[30px] font-semibold text-secondary my-[54px] ">
-              {category?.categoryName}
-            </h2>
-            <FoodDialogs category={category} />
-          </div>
-        );
-      })}
+      {foods
+        .filter((category) => category.count > 0)
+        .map((category: FoodCategory, index: number) => {
+          return (
+            <div key={index}>
+              <h2 className="text-[30px] font-semibold text-secondary my-[54px] ">
+                {category?.categoryName}
+              </h2>
+              <FoodDialogs category={category} />
+            </div>
+          );
+        })}
     </div>
   );
 };
