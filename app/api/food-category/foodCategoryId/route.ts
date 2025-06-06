@@ -5,16 +5,12 @@ import { Types } from "mongoose";
 
 connectMongoDB();
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { foodCategoryId: string } }
-) {
+export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
     const { user, ...categoryData } = body;
-    const { foodCategoryId } = params;
 
-    if (!Types.ObjectId.isValid(foodCategoryId)) {
+    if (!Types.ObjectId.isValid(categoryData.id)) {
       return NextResponse.json(
         { message: "Invalid food category ID" },
         { status: 400 }
@@ -22,7 +18,7 @@ export async function PATCH(
     }
 
     const updatedFoodCategory = await FoodCategoryModel.findByIdAndUpdate(
-      foodCategoryId,
+      categoryData.id,
       { ...categoryData },
       { new: true }
     );
@@ -54,15 +50,12 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { foodCategoryId: string } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { foodCategoryId } = params;
+    const categoryData = await req.json();
 
     const deletedFoodCategory = await FoodCategoryModel.findByIdAndDelete(
-      foodCategoryId
+      categoryData.id
     );
 
     if (!deletedFoodCategory) {

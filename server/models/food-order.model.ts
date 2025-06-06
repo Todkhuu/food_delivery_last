@@ -18,7 +18,7 @@ const FoodOrderSchema = new Schema<FoodOrderModelType>(
     status: {
       type: String,
       enum: Object.values(FoodOrderStatusEnum),
-      default: FoodOrderStatusEnum.PENDING,
+      default: FoodOrderStatusEnum.Pending,
       required: true,
     },
   },

@@ -210,7 +210,6 @@ export function DataTableDemo() {
     newStatus: FoodOrderStatusEnum
   ): Promise<void> {
     try {
-      const idsStr = ids.join(",");
       await axios.patch(`/api/food-order/ids`, {
         ids,
         status: newStatus,
@@ -220,6 +219,7 @@ export function DataTableDemo() {
       console.error("Error updating order statuses:", error);
     }
   }
+
   function handleSingleStatusChange(
     id: string,
     newStatus: FoodOrderStatusEnum

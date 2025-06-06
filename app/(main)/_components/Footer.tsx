@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Facebook, Instagram } from "lucide-react";
-import Image from "next/image";
 import React from "react";
 
 const nomnom = ["Home", "Contact us", "Delivery zone"];

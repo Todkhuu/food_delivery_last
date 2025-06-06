@@ -4,14 +4,11 @@ import { connectMongoDB } from "@/server/database";
 
 connectMongoDB();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { foodId: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { foodId } = params;
+    const foodData = await req.json();
 
-    const food = await FoodModel.findById(foodId);
+    const food = await FoodModel.findById(foodData.id);
 
     if (!food) {
       return NextResponse.json({ message: "Food not found" }, { status: 404 });
@@ -31,17 +28,17 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { foodId: string } }
-) {
+export async function PATCH(req: NextRequest) {
   try {
-    const { foodId } = await params;
     const foodData = await req.json();
 
-    const updatedFood = await FoodModel.findByIdAndUpdate(foodId, foodData, {
-      new: true,
-    });
+    const updatedFood = await FoodModel.findByIdAndUpdate(
+      foodData.id,
+      foodData,
+      {
+        new: true,
+      }
+    );
 
     if (!updatedFood) {
       return NextResponse.json({ message: "Food not found" }, { status: 404 });
@@ -64,14 +61,11 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { foodId: string } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { foodId } = params;
+    const foodData = await req.json();
 
-    const deletedFood = await FoodModel.findByIdAndDelete(foodId);
+    const deletedFood = await FoodModel.findByIdAndDelete(foodData.id);
 
     if (!deletedFood) {
       return NextResponse.json({ message: "Food not found" }, { status: 404 });

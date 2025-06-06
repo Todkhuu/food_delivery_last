@@ -60,13 +60,18 @@ export const AddCategories = () => {
   };
 
   const deleteCategory = async (id: string) => {
-    await axios.delete(`/api/food-category/${id}`);
+    await axios.delete(`/api/food-category/foodCategoryId`, {
+      data: { id },
+    });
     getDatas();
     toast.success("Category deleted successfully");
   };
 
   const editData = async (id: string, category: string) => {
-    await axios.patch(`/api/food-category/${id}`, { categoryName: category });
+    await axios.patch(`/api/food-category/foodCategoryId`, {
+      id,
+      categoryName: category,
+    });
     getDatas();
     setEditCategory(false);
     toast.success("Category updated successfully");

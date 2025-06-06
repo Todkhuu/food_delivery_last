@@ -41,6 +41,7 @@ const formSchema = z
 export const CreateNewPassword = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,8 +51,6 @@ export const CreateNewPassword = () => {
       confirm: "",
     },
   });
-
-  const id = searchParams.get("id");
 
   if (!id) {
     return (

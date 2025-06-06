@@ -5,16 +5,12 @@ import { FoodOrderStatusEnum } from "@/server/constants";
 
 connectMongoDB();
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { foodOrderId: string } }
-) {
+export async function PATCH(req: NextRequest) {
   try {
-    const { foodOrderId } = await params;
     const updateData = await req.json();
 
     const updatedFoodOrder = await FoodOrderModel.findByIdAndUpdate(
-      foodOrderId,
+      updateData.id,
       updateData,
       { new: true }
     );

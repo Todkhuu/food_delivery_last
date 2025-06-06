@@ -63,7 +63,8 @@ export const EditFood = ({ oneFood, categories, category }: editType) => {
     if (file) {
       imageUrl = await handleUpload();
     }
-    await axios.patch(`/api/food/${id}`, {
+    await axios.patch(`/api/food/foodId`, {
+      id,
       ...values,
       image: imageUrl,
       category: currentCategory,
@@ -105,7 +106,7 @@ export const EditFood = ({ oneFood, categories, category }: editType) => {
   };
 
   const deleteFood = async (id: string) => {
-    await axios.delete(`/api/food/${id}`);
+    await axios.delete(`/api/food/foodId`, { data: { id } });
     fetchData();
   };
 

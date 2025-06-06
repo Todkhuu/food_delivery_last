@@ -1,7 +1,7 @@
 "use client";
 import { FoodDialogs } from "@/components/home/FoodDialogs";
 import { useFood } from "../_context/FoodContext";
-import { Food, FoodCategory } from "@/types";
+import { FoodCategory } from "@/types";
 
 export const Foods = () => {
   const { foods } = useFood();

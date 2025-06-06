@@ -1,10 +1,12 @@
+"use client";
+import { Suspense } from "react";
 import { CreateNewPassword } from "./_components/CreateNewPassword";
 
 const Page = () => {
   return (
-    <div>
+    <Suspense>
       <CreateNewPassword />
-    </div>
+    </Suspense>
   );
 };
 export default Page;

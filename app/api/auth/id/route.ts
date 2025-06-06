@@ -1,18 +1,17 @@
 import { UserModel } from "@/server/models";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: Request) {
   try {
-    const awaitedParams = await params;
-    const { id } = awaitedParams;
     const userData = await req.json();
 
-    const updatedFood = await UserModel.findByIdAndUpdate(id, userData, {
-      new: true,
-    });
+    const updatedFood = await UserModel.findByIdAndUpdate(
+      userData.id,
+      userData,
+      {
+        new: true,
+      }
+    );
 
     if (!updatedFood) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

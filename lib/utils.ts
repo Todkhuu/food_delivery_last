@@ -28,11 +28,11 @@ export const getBorderColor = (
   status: FoodOrderStatusEnum
 ): string | undefined => {
   switch (status) {
-    case FoodOrderStatusEnum.PENDING:
+    case FoodOrderStatusEnum.Pending:
       return "rgb(239, 68, 68)";
-    case FoodOrderStatusEnum.CANCELED:
+    case FoodOrderStatusEnum.Canceled:
       return "rgb(229, 231, 235)";
-    case FoodOrderStatusEnum.DELIVERED:
+    case FoodOrderStatusEnum.Delivered:
       return "rgb(34, 197, 94)";
     default:
       return undefined;

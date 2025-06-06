@@ -21,8 +21,7 @@ export const HeaderAddress = () => {
 
   const handleUpdateUser = async () => {
     try {
-      if (!user?._id) return;
-      const response = await axios.patch(`/api/auth/${user._id}`, {
+      await axios.patch(`/api/auth/id`, {
         address: address,
       });
       updateUser({ address });
