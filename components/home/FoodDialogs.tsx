@@ -26,11 +26,7 @@ export const FoodDialogs = ({ category }: { category: FoodCategory }) => {
             key={index}
             open={openDialogId === food._id}
             onOpenChange={(isOpen) =>
-<<<<<<< HEAD
-              setOpenDialogId(isOpen ? food?._id ?? null : null)
-=======
               setOpenDialogId(isOpen && food._id ? food._id : null)
->>>>>>> a948d8c (build)
             }
           >
             <DialogTrigger className="text-left">
