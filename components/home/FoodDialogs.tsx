@@ -8,9 +8,9 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Food, FoodCategory } from "@/types";
-import { useCart } from "@/app/(main)/_context/CartContext";
+import { useCart } from "@/app/main/_context/CartContext";
 import { useState } from "react";
-import { useUser } from "@/app/(main)/_context/UserContext";
+import { useUser } from "@/app/main/_context/UserContext";
 import { toast } from "sonner";
 
 export const FoodDialogs = ({ category }: { category: FoodCategory }) => {

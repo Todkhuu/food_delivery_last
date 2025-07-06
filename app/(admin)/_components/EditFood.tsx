@@ -25,7 +25,7 @@ import { ComboBox } from "../foodmenu/_components/ComboBox";
 import { Food, FoodCategory } from "@/types";
 import CloudinaryUpload from "./CloudinaryUpload";
 import axios from "axios";
-import { useFood } from "@/app/(main)/_context/FoodContext";
+import { useFood } from "@/app/main/_context/FoodContext";
 
 const formSchema = z.object({
   foodName: z.string().min(4).max(50),

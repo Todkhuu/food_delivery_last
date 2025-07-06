@@ -1,6 +1,6 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useUser } from "@/app/(main)/_context/UserContext";
+import { useUser } from "@/app/main/_context/UserContext";
 import { LocationEdit, Soup, Timer } from "lucide-react";
 import { NomNomLogo } from "../icons";
 

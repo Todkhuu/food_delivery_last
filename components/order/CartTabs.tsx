@@ -1,11 +1,11 @@
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/app/(main)/_context/CartContext";
+import { useCart } from "@/app/main/_context/CartContext";
 import Image from "next/image";
 import { Minus, Plus } from "lucide-react";
 import { NomNomLogo } from "../icons";
 import axios from "axios";
-import { useUser } from "@/app/(main)/_context/UserContext";
+import { useUser } from "@/app/main/_context/UserContext";
 import {
   Dialog,
   DialogContent,

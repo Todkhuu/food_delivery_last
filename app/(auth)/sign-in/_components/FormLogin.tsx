@@ -14,7 +14,7 @@ import { z } from "zod";
 import React from "react";
 import { PasswordCheckbox } from "@/components/auth/PasswordCheckBox";
 import { NextButton } from "@/components/button";
-import { useUser } from "@/app/(main)/_context/UserContext";
+import { useUser } from "@/app/main/_context/UserContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),

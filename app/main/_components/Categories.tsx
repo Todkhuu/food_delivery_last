@@ -1,3 +1,4 @@
+"use client";
 import { CategoriesCarousel } from "@/components/home/CategoriesCarousel";
 
 export const Categories = () => {

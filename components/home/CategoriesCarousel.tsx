@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { FoodCategory } from "@/types";
 import { Button } from "../ui/button";
-import { useCategory } from "@/app/(main)/_context/CategoryContext";
+import { useCategory } from "@/app/main/_context/CategoryContext";
 
 export function CategoriesCarousel() {
   const { categories } = useCategory();

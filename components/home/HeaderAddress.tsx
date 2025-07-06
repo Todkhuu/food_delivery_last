@@ -12,7 +12,7 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import axios from "axios";
-import { useUser } from "@/app/(main)/_context/UserContext";
+import { useUser } from "@/app/main/_context/UserContext";
 
 export const HeaderAddress = () => {
   const { user, updateUser } = useUser();

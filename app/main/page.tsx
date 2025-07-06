@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { Categories } from "./_components/Categories";
 import { Foods } from "./_components/Foods";
 import { Footer } from "./_components/Footer";

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sheet";
 import { ShoppingCart } from "lucide-react";
 import { HeaderTab } from "./HeaderTab";
-import { useCart } from "@/app/(main)/_context/CartContext";
+import { useCart } from "@/app/main/_context/CartContext";
 
 export const HeaderSheet = () => {
   const { cartItems } = useCart();

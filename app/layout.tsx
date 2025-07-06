@@ -2,10 +2,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import { UserProvider } from "./(main)/_context/UserContext";
-import { FoodProvider } from "./(main)/_context/FoodContext";
-import { CartProvider } from "./(main)/_context/CartContext";
-import { CategoryProvider } from "./(main)/_context/CategoryContext";
+import { UserProvider } from "./main/_context/UserContext";
+import { FoodProvider } from "./main/_context/FoodContext";
+import { CartProvider } from "./main/_context/CartContext";
+import { CategoryProvider } from "./main/_context/CategoryContext";
 import { Inter, Roboto_Mono } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });

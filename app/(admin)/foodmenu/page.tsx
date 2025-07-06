@@ -4,7 +4,7 @@ import { AddCategories } from "../_components/AddCategories";
 import { AddFoods } from "../_components/AddFoods";
 import { AddedFoods } from "../_components/AddedFoods";
 import { FoodCategory } from "@/types";
-import { useFood } from "@/app/(main)/_context/FoodContext";
+import { useFood } from "@/app/main/_context/FoodContext";
 
 export default function FoodMenu() {
   const { foods } = useFood();
