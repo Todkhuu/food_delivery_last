@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { FoodModel } from "@/server/models";
 import { connectMongoDB } from "@/server/database";
