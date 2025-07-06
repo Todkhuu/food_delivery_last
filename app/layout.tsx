@@ -1,24 +1,17 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { UserProvider } from "./(main)/_context/UserContext";
 import { FoodProvider } from "./(main)/_context/FoodContext";
 import { CartProvider } from "./(main)/_context/CartContext";
 import { CategoryProvider } from "./(main)/_context/CategoryContext";
+import { Inter, Roboto_Mono } from "next/font/google";
 
-const geistSans = localFont({
-  src: "/fonts/Geist-Regular.woff2",
-  variable: "--font-geist-sans",
-  display: "swap",
-  preload: true,
-});
-
-const geistMono = localFont({
-  src: "/fonts/GeistMono-Regular.woff2",
-  variable: "--font-geist-mono",
-  display: "swap",
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-roboto-mono",
 });
 
 export const metadata: Metadata = {
@@ -32,10 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${inter.variable} ${robotoMono.variable}`}>
+      <body className="antialiased">
         <UserProvider>
           <CategoryProvider>
             <FoodProvider>
