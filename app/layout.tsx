@@ -1,5 +1,6 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { UserProvider } from "./(main)/_context/UserContext";
@@ -7,16 +8,17 @@ import { FoodProvider } from "./(main)/_context/FoodContext";
 import { CartProvider } from "./(main)/_context/CartContext";
 import { CategoryProvider } from "./(main)/_context/CategoryContext";
 
-const geistSans = Geist({
+const geistSans = localFont({
+  src: "/fonts/Geist-Regular.woff2",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
   display: "swap",
   preload: true,
 });
 
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+  src: "/fonts/GeistMono-Regular.woff2",
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
